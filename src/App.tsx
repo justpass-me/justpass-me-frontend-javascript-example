@@ -1,25 +1,29 @@
-import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { UserManager } from 'oidc-client-ts';
+import SigninRedirect from './pages/SigninRedirect';
+import SignoutRedirect from './pages/SignoutRedirect';
+import Home from './pages/Home';
 
 function App() {
+  const userManager = new UserManager({
+    authority: "https://example.accounts.justpass.me/openid/",
+    client_id: "678605",
+    redirect_uri: "http://localhost:3000/signin_redirect",
+    popup_redirect_uri: "http://localhost:3000/signin_redirect",
+    popup_post_logout_redirect_uri: "http://localhost:3000/signout_redirect",
+    post_logout_redirect_uri: "http://localhost:3000/signout_redirect",
+    scope: "openid profile"
+  });
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home userManager={userManager}/>} />
+        <Route path="/signin_redirect" element={<SigninRedirect userManager={userManager}/>} />
+        <Route path="/signout_redirect" element={<SignoutRedirect userManager={userManager} />} />
+      </Routes>
+    </Router>
   );
 }
 
