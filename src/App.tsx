@@ -4,6 +4,7 @@ import { UserManager } from 'oidc-client-ts';
 import SigninRedirect from './pages/SigninRedirect';
 import SignoutRedirect from './pages/SignoutRedirect';
 import Home from './pages/Home';
+import React from 'react';
 
 function App() {
   const userManager = new UserManager({
